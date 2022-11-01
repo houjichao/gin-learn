@@ -1,4 +1,4 @@
-module gin-learn
+module github.com/houjichao/gin-learn
 
 go 1.16
 

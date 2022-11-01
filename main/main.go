@@ -1,20 +1,42 @@
 package main
 
 import (
+	"github.com/houjichao/gin-learn/entity"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+/*// 定义接收数据的结构体
+type Login struct {
+	// binding:"required"修饰的字段，若接收为空值，则报错，是必须字段
+	User     string `form:"user" json:"user" uri:"user" xml:"user" binding:"required"`
+	Password string `form:"password" json:"password" uri:"password" xml:"password" binding:"required"`
+}*/
+
 func main() {
+
 	// 1.创建路由
+	// 默认使用了2个中间件Logger(), Recovery()
+
 	r := gin.Default()
-	// 2.绑定路由规则，执行的函数
-	// gin.Context，封装了request和response
-	r.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello World!")
+	// JSON绑定
+	r.POST("loginJSON", func(c *gin.Context) {
+		// 声明接收的变量
+		var json entity.Login
+		// 将request的body中的数据，自动按照json格式解析到结构体
+		if err := c.ShouldBindJSON(&json); err != nil {
+			// 返回错误信息
+			// gin.H封装了生成json数据的工具
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		// 判断用户名密码是否正确
+		if json.User != "root" || json.Password != "admin" {
+			c.JSON(http.StatusBadRequest, gin.H{"status": "304"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"status": "200"})
 	})
-	// 3.监听端口，默认在8080
-	// Run("里面不指定端口号默认为8080")
 	r.Run(":8000")
 }
