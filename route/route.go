@@ -19,4 +19,5 @@ func NewAndSetup(r *gin.Engine) {
 
 	r.GET("/stu/queryById/:id", service.Query)
 
+	r.POST("/stu/updateById", service.Update)
 }

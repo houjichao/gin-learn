@@ -4,56 +4,51 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/houjichao/gin-learn/entity"
-	"github.com/jinzhu/gorm"
+	"github.com/houjichao/gin-learn/library/orm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"net/http"
 )
 
 func Create(c *gin.Context) {
-	db, err := gorm.Open("mysql", "root:123456@(127.0.0.1:3306)/learn?charset=utf8mb4&parseTime=True&loc=Local")
-	if err != nil {
-		fmt.Println("数据库连接失败")
-		panic(err)
-	}
-	defer db.Close()
-
 	//自动迁移
-	//db.AutoMigrate(&entity.Student{})
-
-	//关闭复数表名
-	db.SingularTable(true)
+	//orm.AutoMigrate(&entity.Student{})
 
 	var stu entity.Student
 	err1 := c.ShouldBindJSON(&stu)
 	if err1 != nil {
-		fmt.Println("参数绑定错误:", err)
+		fmt.Println("参数绑定错误:", err1)
 	}
 	//创建记录
-	var result = db.Create(&stu)
+	var result = orm.DB.Create(&stu)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 	return
 }
 
-func Query(c *gin.Context) {
-	db, err := gorm.Open("mysql", "root:123456@(127.0.0.1:3306)/learn?charset=utf8mb4&parseTime=True&loc=Local")
-	if err != nil {
-		fmt.Println("数据库连接失败")
-		panic(err)
+func Update(c *gin.Context) {
+
+	var stu entity.Student
+	err1 := c.ShouldBindJSON(&stu)
+	if err1 != nil {
+		fmt.Println("参数绑定错误:", err1)
 	}
-	defer db.Close()
+	//更新操作
+	//提示: 相当于根据主键id，更新所有模型字段值。
+	orm.DB.Save(&stu)
+	//更新单个字段值
+	//orm.Model(&stu).Update("age", stu.Age)
+	//其他的method等使用时再查api
+	c.JSON(http.StatusOK, gin.H{"data": stu})
+	return
+}
 
-	//自动迁移
-	//db.AutoMigrate(&entity.Student{})
-
-	//关闭复数表名
-	db.SingularTable(true)
+func Query(c *gin.Context) {
 
 	var stu entity.Student
 	err1 := c.ShouldBindUri(&stu)
 	if err1 != nil {
-		fmt.Println("参数绑定错误:", err)
+		fmt.Println("参数绑定错误:", err1)
 	}
-	db.First(&stu, stu.Id)
+	orm.DB.First(&stu, stu.Id)
 	c.JSON(http.StatusOK, gin.H{"data": stu})
 	return
 }
