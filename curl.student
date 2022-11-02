@@ -1,0 +1,9 @@
+//新增学生
+curl --location --request POST 'http://localhost:8000/stu/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{"name":"jack","age":29}'
+
+//修改学生
+
+
+//查询学生

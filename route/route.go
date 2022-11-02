@@ -13,5 +13,10 @@ func NewAndSetup(r *gin.Engine) {
 	{
 		demoGroup.POST("/loginJSON", service.Demo)
 	}*/
-	r.POST("/demo/loginJSON",service.Demo)
+	r.POST("/demo/loginJSON", service.Demo)
+
+	r.POST("/stu/create", service.Create)
+
+	r.GET("/stu/queryById/:id", service.Query)
+
 }
