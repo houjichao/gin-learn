@@ -93,7 +93,6 @@ func PageQueryInter(c *gin.Context) map[string]interface{} {
 	fmt.Println(entity.Student{}.TableName())
 	db.Debug().Table(entity.Student{}.TableName()).Where(where.Query, where.Args...).Count(&count)
 
-
 	db = db.Debug().Table(entity.Student{}.TableName()).Where(where.Query, where.Args...)
 	if offset >= 0 {
 		db = db.Offset(offset)
