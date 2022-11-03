@@ -28,6 +28,7 @@ func InitDB(conf *ini.File) *gorm.DB {
 	mysqlPort := conf.Section("mysql").Key("db_port").String()
 	mysqlCharset := conf.Section("mysql").Key("db_charset").String()
 
+
 	// sqlite3配置信息
 	sqliteName := conf.Section("sqlite3").Key("db_name").String()
 

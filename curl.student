@@ -4,6 +4,14 @@ curl --location --request POST 'http://localhost:8000/stu/create' \
 --data-raw '{"name":"jack","age":29}'
 
 //修改学生
+curl --location --request POST 'http://localhost:8000/stu/updateById' \
+--header 'Content-Type: application/json' \
+--data-raw '{"id":8,"name":"mike","age":25}'
 
+//根据id查询学生
+curl --location --request GET 'http://localhost:8000/stu/queryById/6'
 
-//查询学生
+//分页查询学生
+curl --location --request POST 'http://localhost:8000/stu/pageQuery' \
+--header 'Content-Type: application/json' \
+--data-raw '{"page":{"page_index":2,"page_size":10},"name":"jack1","id":10}'
