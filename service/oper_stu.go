@@ -17,6 +17,8 @@ func Create(c *gin.Context) {
 	err1 := c.ShouldBindJSON(&stu)
 	if err1 != nil {
 		fmt.Println("参数绑定错误:", err1)
+		c.JSON(http.StatusInternalServerError,err1)
+		return
 	}
 	//创建记录
 	var result = orm.DB.Create(&stu)
