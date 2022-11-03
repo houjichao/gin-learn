@@ -15,6 +15,12 @@ type Student struct {
 	Age int `gorm:"column:age" json:"age" binding:"required,gt=6"`
 }
 
+//如果表名和结构体名有不同，则通过实现该结构体的TableName方法指定表名
+// TableName 表名字
+func (Student) TableName() string {
+	return "t_student"
+}
+
 // 1、自定义的校验方法
 var NameNotNullAndAdmin validator.Func = func(fl validator.FieldLevel) bool {
 
